@@ -2,8 +2,8 @@ from httptest import Http
 
 
 class YuShuBook:
-
     # search_by_isbn_url = "http://t.yushu.im/v2/book/isbn/9787535436702"
+    # http://127.0.0.1:5000/book/search?q=9787535436702&page=1
     search_by_isbn_url = "http://t.yushu.im/v2/book/isbn/{}"
     search_by_key_url = "http://t.yushu.im/v2/book/search?q={}&count={}&start={}"
 

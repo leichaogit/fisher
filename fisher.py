@@ -1,12 +1,10 @@
-from flask import Flask
 
-from books import books
 
-app = Flask(__name__)
+from app import create_app
 
-app.register_blueprint(books)
+app = create_app()
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port=5000)
+    app.run(debug=app.config['DEBUG'],port=5000)
