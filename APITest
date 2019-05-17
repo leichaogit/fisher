@@ -1,0 +1,2 @@
+http://127.0.0.1:5000/book/search?q=9787535436702&page=1
+http://127.0.0.1:5000/book/search?q=郭敬明&page=1

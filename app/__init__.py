@@ -3,7 +3,7 @@ from flask import Flask
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('config')
+    app.config.from_object('app.secure')
 
     # 统一注册蓝图
     register_blueprint(app)
