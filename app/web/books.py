@@ -1,10 +1,10 @@
 from flask import jsonify
 from flask import request
 
-from app.web import web
-from helper import is_key_or_isbn
-from yushu_book import YuShuBook
 from app.forms.form import SearchForms
+from app.libs.helper import is_key_or_isbn
+from app.web import web
+from yushu_book import YuShuBook
 
 
 @web.route('/book/search')
@@ -20,12 +20,10 @@ def search():
     # HTTP请求信息
     # 查询参数 POST参数 remote ip
     form = SearchForms(request.args)
-    # 参数校验成功过
+    # 参数校验成功
     if form.validate():
         q = form.q.data.strip()
         page = form.page.data
-        # q = request.args['q']
-        # page = request.args['page']
         key_or_isbn = is_key_or_isbn(q)
         if key_or_isbn == 'key':
             result = YuShuBook.search_by_key(q, page)
