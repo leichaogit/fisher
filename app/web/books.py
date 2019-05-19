@@ -1,9 +1,10 @@
+from flask import json
 from flask import jsonify
 from flask import request
 
 from app.forms.form import SearchForms
 from app.libs.helper import is_key_or_isbn
-from app.view_model.book import BookViewModle
+from app.view_model.book import BookCollection
 from app.web import web
 from yushu_book import YuShuBook
 
@@ -21,19 +22,20 @@ def search():
     # HTTP请求信息
     # 查询参数 POST参数 remote ip
     form = SearchForms(request.args)
+    books = BookCollection()
     # 参数校验成功
     if form.validate():
         q = form.q.data.strip()
         page = form.page.data
         key_or_isbn = is_key_or_isbn(q)
         # 对后续需要渲染的数据进行处理
+        yushu_book = YuShuBook()
         if key_or_isbn == 'key':
-            result = YuShuBook.search_by_key(q, page)
-            result = BookViewModle.package_collection(result, q)
+            yushu_book.search_by_key(q,page)
         else:
-            result = YuShuBook.search_by_isbn(q)
-            result = BookViewModle.package_single(result, q)
-        return jsonify(result)
+            yushu_book.search_by_isbn(q)
+        books.fill(yushu_book,q)
+        return json.dumps(books,default=lambda  o:o.__dict__)
     else:
         return jsonify(form.errors)
 
