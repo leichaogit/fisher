@@ -3,6 +3,7 @@ from flask import request
 
 from app.forms.form import SearchForms
 from app.libs.helper import is_key_or_isbn
+from app.view_model.book import BookViewModle
 from app.web import web
 from yushu_book import YuShuBook
 
@@ -25,10 +26,13 @@ def search():
         q = form.q.data.strip()
         page = form.page.data
         key_or_isbn = is_key_or_isbn(q)
+        # 对后续需要渲染的数据进行处理
         if key_or_isbn == 'key':
             result = YuShuBook.search_by_key(q, page)
+            result = BookViewModle.package_collection(result, q)
         else:
             result = YuShuBook.search_by_isbn(q)
+            result = BookViewModle.package_single(result, q)
         return jsonify(result)
     else:
         return jsonify(form.errors)

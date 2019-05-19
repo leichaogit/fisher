@@ -1,5 +1,6 @@
 from app.libs.httptest import Http
 from app.setting import PER_PAGE
+from flask import current_app
 
 
 class YuShuBook:
@@ -13,7 +14,7 @@ class YuShuBook:
 
     @classmethod
     def search_by_key(cls, p, page):
-        url = cls.search_by_key_url.format(p, PER_PAGE, cls.count_page(page))
+        url = cls.search_by_key_url.format(p, current_app.config['PER_PAGE'], cls.count_page(page))
         return Http.get(url)
 
     @classmethod
