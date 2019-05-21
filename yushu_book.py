@@ -12,6 +12,10 @@ class YuShuBook:
         self.books = []
 
     def search_by_isbn(self, isbn):
+        """
+        :param isbn:
+        :return:get isbn book message
+        """
         url = self.search_by_isbn_url.format(isbn)
         result = Http.get(url)
         self.__fill_single(result)
@@ -22,6 +26,11 @@ class YuShuBook:
             self.books = data['books']
 
     def search_by_key(self, p, page):
+        """
+        :param p:
+        :param page:
+        :return:get keywords book message
+        """
         url = self.search_by_key_url.format(p, current_app.config['PER_PAGE'], self.count_page(page))
         result = Http.get(url)
         self.__fill_collection(result)

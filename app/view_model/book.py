@@ -1,16 +1,3 @@
-"""
-       book = {
-            "title": data["title"],
-            "publisher": data["publisher"],
-            "pages": data["pages"] or '',
-            "author": data["author"],
-            "price": data["price"],
-            "summary": data["summary"] or '',
-            "image": data["summary"]
-        }
-"""
-
-
 class BookViewModel:
     """对单本书籍的数据进行处理"""
 
@@ -30,13 +17,22 @@ class BookCollection:
         self.books = []
         self.keyword = ''
 
-    def fill(self, yushu_book, keyword):
-        self.total = yushu_book.total
+    def fill(self, yushubook, keyword):
+        """
+        对接收的url信息进行处理
+        :param yushubook:
+        :param keyword:
+        :return:
+        """
+        self.total = yushubook.total
         self.keyword = keyword
-        self.bools = [BookViewModel(book) for book in yushu_book.books]
+        self.books = [BookViewModel(book) for book in yushubook.books]
 
 
 class _BookViewModel:
+    """
+    伪类，封装的是面对过程，
+    """
     @classmethod
     def package_single(cls, data, keyword):
         returned = {

@@ -29,13 +29,13 @@ def search():
         page = form.page.data
         key_or_isbn = is_key_or_isbn(q)
         # 对后续需要渲染的数据进行处理
-        yushu_book = YuShuBook()
+        yushubook = YuShuBook()
         if key_or_isbn == 'key':
-            yushu_book.search_by_key(q,page)
+            yushubook.search_by_key(q, page)
         else:
-            yushu_book.search_by_isbn(q)
-        books.fill(yushu_book,q)
-        return json.dumps(books,default=lambda  o:o.__dict__)
+            yushubook.search_by_isbn(q)
+        books.fill(yushubook, q)
+        return json.dumps(books, default=lambda o: o.__dict__)
     else:
         return jsonify(form.errors)
 
