@@ -5,10 +5,17 @@ class BookViewModel:
         self.title = book['title']
         self.publisher = book['publisher']
         self.pages = book['pages']
-        self.author = book['author']
+        self.author = '、'.join(book['author'])
         self.price = book['price']
         self.summary = book['summary']
         self.image = book['image']
+        self.isbn = book['isbn']
+
+    @property
+    def intro(self):
+        intros = filter(lambda o: True if o else False,
+                        [self.author, self.publisher, self.price])
+        return '/'.join(intros)
 
 
 class BookCollection:
@@ -33,6 +40,7 @@ class _BookViewModel:
     """
     伪类，封装的是面对过程，
     """
+
     @classmethod
     def package_single(cls, data, keyword):
         returned = {

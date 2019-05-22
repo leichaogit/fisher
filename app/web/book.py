@@ -3,10 +3,11 @@ from flask.templating import render_template
 
 from app.forms.form import SearchForms
 from app.libs.helper import is_key_or_isbn
-from app.view_model.book import BookCollection
+from app.view_model.book import BookCollection, BookViewModel
 from . import web
 from yushu_book import YuShuBook
 from flask import flash
+
 
 @web.route('/book/search')
 def search():
@@ -42,7 +43,13 @@ def search():
 
 @web.route('/book/<isbn>/detail')
 def book_detail(isbn):
-    pass
-
-
-
+    """
+    获取书籍数据
+    对单本书籍的数据进行处理
+    :param isbn:
+    :return:
+    """
+    yushu_book = YuShuBook()
+    yushu_book.search_by_isbn(isbn)
+    book = BookViewModel(yushu_book.first)
+    return render_template('book_detail.html', book=book, wishes=[], gifts=[])

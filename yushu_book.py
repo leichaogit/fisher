@@ -20,11 +20,6 @@ class YuShuBook:
         result = Http.get(url)
         self.__fill_single(result)
 
-    def __fill_single(self, data):
-        if data:
-            self.total = 1
-            self.books = data['books']
-
     def search_by_key(self, p, page):
         """
         :param p:
@@ -35,6 +30,11 @@ class YuShuBook:
         result = Http.get(url)
         self.__fill_collection(result)
 
+    def __fill_single(self, data):
+        if data:
+            self.total = 1
+            self.books.append(data)
+
     def __fill_collection(self, data):
         if data:
             self.total = data['total']
@@ -43,3 +43,7 @@ class YuShuBook:
     def count_page(self, page):
         start = (page - 1) * PER_PAGE
         return start
+
+    @property
+    def first(self):
+        return self.books[0] if self.books[0] else ''
