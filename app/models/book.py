@@ -5,7 +5,7 @@ from sqlalchemy import String
 from app.models import Base
 
 
-class Person(Base):
+class Book(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
     title = Column(String(50), nullable=False)
     _author = Column('author', String(30), default='佚名')
