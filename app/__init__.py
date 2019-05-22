@@ -13,10 +13,8 @@ def create_app():
     with app.app_context():
         db.create_all()
     # 统一注册蓝图
-    register_blueprint(app)
+    from app.web import web
+    app.register_blueprint(web)
     return app
 
 
-def register_blueprint(app):
-    from app.web import web
-    app.register_blueprint(web)
