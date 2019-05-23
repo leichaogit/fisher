@@ -3,15 +3,14 @@ from sqlalchemy import Column
 from sqlalchemy import Float
 from sqlalchemy import Integer
 from sqlalchemy import String
-from werkzeug.security import generate_password_hash
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from app.models import Base
 
 
 class User(Base):
     id = Column(Integer, primary_key=True)
-    nickname = Column(String(24), nullable=False)
-    _password = Column("password", String(64))
+    nickname = Column(String(24), unique=True, nullable=False)
+    _password = Column("password", String(128))
     phone_number = Column(String(18), unique=True)
     email = Column(String(50), unique=True, nullable=False)
     confirmed = Column(Boolean, default=False)
@@ -33,3 +32,6 @@ class User(Base):
         :return:
         """
         self._password = generate_password_hash(raw)
+
+    def check_password(self, raw):
+        return check_password_hash(self.password, raw)
