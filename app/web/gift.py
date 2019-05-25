@@ -1,8 +1,9 @@
 from _curses import flash
 
 from flask import current_app
+from flask import redirect
+from flask import url_for
 from flask.ext.login.utils import login_required, current_user
-from flask.templating import render_template
 
 from app.models import db
 from app.models.gift import Gift
@@ -26,23 +27,16 @@ def save_to_gifts(isbn):
     :return:
     """
     if current_user.can_save_to_list(isbn):
-        try:
+        with db.auto_commit():
             gift = Gift()
             gift.isbn = isbn
             # current_user:实例化当前用户的模型
             gift.uid = current_user.id
-            if current_user.beans >= current_app.config['BEANS_USE_NUMBER']:
-                current_user.beans -= current_app.config['BEANS_USE_NUMBER']
-            else:
-                flash("您当前的鱼豆数量不足，请充值！")
+            current_user.beans -= current_app.config['BEANS_USE_NUMBER']
             db.session.add(gift)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            raise e
     else:
-        flash('这本书已经添加到赠送或者礼物清单，请不要重复添加')
-    return render_template('gifts.html', recent={'book': {}})
+        flash('这本书已添加至你的赠送清单或已存在于你的心愿清单，请不要重复添加')
+    return redirect(url_for('web.book_detail', isbn=isbn))
 
 
 @web.route('/gifts/<gid>/redraw')
